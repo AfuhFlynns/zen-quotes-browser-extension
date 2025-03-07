@@ -71,10 +71,27 @@ export default function Home() {
     if (searchQuery.trim()) {
       // In a real extension, this would use the browser's search API
       // For this demo, we'll just open a Google search
-      window.open(
-        `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`,
-        "_blank"
-      );
+      // https://chatgpt.com/?q=What+is+a+house%3F&hints=search&ref=ext (Using chatgpt search engine)
+      // https://www.google.com/search?q=What+is+a+house%3F (Using google search engine)
+
+      // ? Check if the search query is a url https and send to google else send to chatgpt search engine
+
+      const urlRegex =
+        /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+      if (urlRegex.test(searchQuery)) {
+        window.open(
+          `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`,
+          "_blank"
+        );
+      } else
+        window.open(
+          `https://chatgpt.com/?q=${encodeURIComponent(
+            searchQuery
+          )}&hints=search&ref=ext`,
+          "_blank"
+        );
+      // Clear the search query
+      setSearchQuery("");
     }
   };
 
